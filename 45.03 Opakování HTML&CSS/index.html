@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" href="fonts/Minecraft-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <title>Minecraft Inventář</title>
+    <style>
+
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('fonts/Minecraft-Regular.woff2') format('woff2'),
+                url('fonts/Minecraft-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+/* Další styly */
+
+        body {
+            font-family: 'Minecraft', sans-serif;
+
+            background-color: #cfcfcf; /* Světle šedé pozadí */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(7, 64px); /* 7 sloupců */
+            grid-gap: 5px;
+            width: auto;
+            border: 2px solid #333;
+            background-color: #222; /* Temně šedé pozadí */
+            padding: 5px;
+        }
+        .item {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #555; /* Rámeček kolem položky */
+            position: relative;
+            background-color: #444; /* Tmavě šedé pozadí */
+            box-shadow: inset 0 0 5px #000; /* Vnitřní stín pro 3D efekt */
+        }
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Přizpůsobí obrázek do kontejneru */
+        }
+        .remove {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .thumbnail {
+            width: 64px;
+            height: 64px;
+            cursor: pointer;
+            border: 2px solid #333;
+            margin: 5px;
+            box-shadow: inset 0 0 5px #000;
+        }
+        #imageGallery {
+            display: grid;
+            grid-template-columns: repeat(5, 64px); /* 5 sloupců */
+            grid-gap: 5px;
+            width: 640px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minecraft Inventář</h1>
+    
+    <div class="controls">
+        <div id="imageGallery">
+            <img src="img/inventory1.png" alt="Sword" class="thumbnail" data-image="img/inventory1.png">
+            <img src="img/inventory2.png" alt="Sword" class="thumbnail" data-image="img/inventory2.png">
+            <img src="img/inventory3.png" alt="Sword" class="thumbnail" data-image="img/inventory3.png">
+        </div>
+    </div>
+    <div class="inventory" id="inventory"></div>
+
+    <script>
+        // Získání elementů
+        const inventory = document.getElementById('inventory');
+        const imageGallery = document.getElementById('imageGallery');
+
+        // Funkce pro vytvoření nové položky
+        function createItem(imageSrc) {
+            // Vytvoření nového divu pro položku
+            const item = document.createElement('div');
+            item.className = 'item';
+
+            // Vytvoření nového obrázku pro položku
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            item.appendChild(img);
+
+            // Vytvoření tlačítka pro odstranění položky
+            const removeButton = document.createElement('button');
+            removeButton.innerText = 'X';
+            removeButton.className = 'remove';
+            removeButton.addEventListener('click', function() {
+                inventory.removeChild(item);
+            });
+
+            // Přidání tlačítka do položky a položky do inventáře
+            item.appendChild(removeButton);
+            inventory.appendChild(item);
+        }
+
+        // Přidání položky po kliknutí na obrázek z galerie
+        imageGallery.addEventListener('click', function(event) {
+            if (event.target.classList.contains('thumbnail')) {
+                const imageSrc = event.target.getAttribute('data-image');
+                createItem(imageSrc);
+            }
+        });
+    </script>
+</body>
+</html>
